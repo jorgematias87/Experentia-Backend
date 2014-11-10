@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Alumno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="estado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AlumnoGrupo">
+    <Key>
+      <PropertyRef Name="idAlumno" />
+      <PropertyRef Name="idGrupo" />
+    </Key>
+    <Property Name="idAlumno" Type="int" Nullable="false" />
+    <Property Name="idGrupo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comision">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Coordinador">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="idMateria" Type="int" />
+  </EntityType>
+  <EntityType Name="Empresa">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="razonSocial" Type="varchar" MaxLength="50" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Grupo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+    <Property Name="idComision" Type="int" />
+  </EntityType>
+  <EntityType Name="Materia">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="idComision" Type="int" />
+  </EntityType>
+  <EntityType Name="Proyecto">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="estado" Type="varchar" MaxLength="50" />
+    <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+    <Property Name="fechaLimite" Type="datetime" />
+    <Property Name="idGrupo" Type="int" />
+    <Property Name="idEmpresa" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Tarea">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="estado" Type="varchar" MaxLength="50" />
+    <Property Name="calificacion" Type="int" />
+    <Property Name="comentario" Type="varchar" MaxLength="50" />
+    <Property Name="fechaInicio" Type="datetime" />
+    <Property Name="idProyecto" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AlumnoGrupo_Alumno">
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+    <End Role="AlumnoGrupo" Type="Self.AlumnoGrupo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumno">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="AlumnoGrupo">
+        <PropertyRef Name="idAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AlumnoGrupo_Grupo">
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
+    <End Role="AlumnoGrupo" Type="Self.AlumnoGrupo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grupo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="AlumnoGrupo">
+        <PropertyRef Name="idGrupo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Coordinador_Materia">
+    <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Coordinador">
+        <PropertyRef Name="idMateria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Grupo_Comision">
+    <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comision">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Grupo">
+        <PropertyRef Name="idComision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Materia_Comision">
+    <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
+    <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comision">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Materia">
+        <PropertyRef Name="idComision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_Empresa">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Proyecto">
+        <PropertyRef Name="idEmpresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_Grupo">
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="0..1" />
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grupo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Proyecto">
+        <PropertyRef Name="idGrupo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tarea_Proyecto">
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+    <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Proyecto">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Tarea">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="ExperentiaModelStoreContainer">
+    <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AlumnoGrupo" EntityType="Self.AlumnoGrupo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Comision" EntityType="Self.Comision" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Coordinador" EntityType="Self.Coordinador" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tarea" EntityType="Self.Tarea" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AlumnoGrupo_Alumno" Association="Self.FK_AlumnoGrupo_Alumno">
+      <End Role="Alumno" EntitySet="Alumno" />
+      <End Role="AlumnoGrupo" EntitySet="AlumnoGrupo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AlumnoGrupo_Grupo" Association="Self.FK_AlumnoGrupo_Grupo">
+      <End Role="Grupo" EntitySet="Grupo" />
+      <End Role="AlumnoGrupo" EntitySet="AlumnoGrupo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Coordinador_Materia" Association="Self.FK_Coordinador_Materia">
+      <End Role="Materia" EntitySet="Materia" />
+      <End Role="Coordinador" EntitySet="Coordinador" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
+      <End Role="Comision" EntitySet="Comision" />
+      <End Role="Grupo" EntitySet="Grupo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Materia_Comision" Association="Self.FK_Materia_Comision">
+      <End Role="Comision" EntitySet="Comision" />
+      <End Role="Materia" EntitySet="Materia" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_Empresa" Association="Self.FK_Proyecto_Empresa">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Proyecto" EntitySet="Proyecto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_Grupo" Association="Self.FK_Proyecto_Grupo">
+      <End Role="Grupo" EntitySet="Grupo" />
+      <End Role="Proyecto" EntitySet="Proyecto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tarea_Proyecto" Association="Self.FK_Tarea_Proyecto">
+      <End Role="Proyecto" EntitySet="Proyecto" />
+      <End Role="Tarea" EntitySet="Tarea" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

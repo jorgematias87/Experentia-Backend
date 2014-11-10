@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ExperentiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Alumno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="estado" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Grupo" Relationship="Self.AlumnoGrupo" FromRole="Alumno" ToRole="Grupo" />
+  </EntityType>
+  <EntityType Name="Comision">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Grupo" Relationship="Self.FK_Grupo_Comision" FromRole="Comision" ToRole="Grupo" />
+    <NavigationProperty Name="Materia" Relationship="Self.FK_Materia_Comision" FromRole="Comision" ToRole="Materia" />
+  </EntityType>
+  <EntityType Name="Coordinador">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="idMateria" Type="Int32" />
+    <NavigationProperty Name="Materia" Relationship="Self.FK_Coordinador_Materia" FromRole="Coordinador" ToRole="Materia" />
+  </EntityType>
+  <EntityType Name="Empresa">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="razonSocial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Proyecto" Relationship="Self.FK_Proyecto_Empresa" FromRole="Empresa" ToRole="Proyecto" />
+  </EntityType>
+  <EntityType Name="Grupo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idComision" Type="Int32" />
+    <NavigationProperty Name="Comision" Relationship="Self.FK_Grupo_Comision" FromRole="Grupo" ToRole="Comision" />
+    <NavigationProperty Name="Proyecto" Relationship="Self.FK_Proyecto_Grupo" FromRole="Grupo" ToRole="Proyecto" />
+    <NavigationProperty Name="Alumno" Relationship="Self.AlumnoGrupo" FromRole="Grupo" ToRole="Alumno" />
+  </EntityType>
+  <EntityType Name="Materia">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idComision" Type="Int32" />
+    <NavigationProperty Name="Comision" Relationship="Self.FK_Materia_Comision" FromRole="Materia" ToRole="Comision" />
+    <NavigationProperty Name="Coordinador" Relationship="Self.FK_Coordinador_Materia" FromRole="Materia" ToRole="Coordinador" />
+  </EntityType>
+  <EntityType Name="Proyecto">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaLimite" Type="DateTime" Precision="3" />
+    <Property Name="idGrupo" Type="Int32" />
+    <Property Name="idEmpresa" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK_Proyecto_Empresa" FromRole="Proyecto" ToRole="Empresa" />
+    <NavigationProperty Name="Grupo" Relationship="Self.FK_Proyecto_Grupo" FromRole="Proyecto" ToRole="Grupo" />
+    <NavigationProperty Name="Tarea" Relationship="Self.FK_Tarea_Proyecto" FromRole="Proyecto" ToRole="Tarea" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Tarea">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="calificacion" Type="Int32" />
+    <Property Name="comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaInicio" Type="DateTime" Precision="3" />
+    <Property Name="idProyecto" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
+  </EntityType>
+  <Association Name="FK_Grupo_Comision">
+    <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comision">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Grupo">
+        <PropertyRef Name="idComision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Materia_Comision">
+    <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
+    <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comision">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Materia">
+        <PropertyRef Name="idComision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Coordinador_Materia">
+    <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Coordinador">
+        <PropertyRef Name="idMateria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_Empresa">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Proyecto">
+        <PropertyRef Name="idEmpresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_Grupo">
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="0..1" />
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grupo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Proyecto">
+        <PropertyRef Name="idGrupo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tarea_Proyecto">
+    <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+    <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Proyecto">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Tarea">
+        <PropertyRef Name="idProyecto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AlumnoGrupo">
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="*" />
+    <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="ExperentiaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Alumno" EntityType="Self.Alumno" />
+    <EntitySet Name="Comision" EntityType="Self.Comision" />
+    <EntitySet Name="Coordinador" EntityType="Self.Coordinador" />
+    <EntitySet Name="Empresa" EntityType="Self.Empresa" />
+    <EntitySet Name="Grupo" EntityType="Self.Grupo" />
+    <EntitySet Name="Materia" EntityType="Self.Materia" />
+    <EntitySet Name="Proyecto" EntityType="Self.Proyecto" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Tarea" EntityType="Self.Tarea" />
+    <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
+      <End Role="Comision" EntitySet="Comision" />
+      <End Role="Grupo" EntitySet="Grupo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Materia_Comision" Association="Self.FK_Materia_Comision">
+      <End Role="Comision" EntitySet="Comision" />
+      <End Role="Materia" EntitySet="Materia" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Coordinador_Materia" Association="Self.FK_Coordinador_Materia">
+      <End Role="Materia" EntitySet="Materia" />
+      <End Role="Coordinador" EntitySet="Coordinador" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_Empresa" Association="Self.FK_Proyecto_Empresa">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Proyecto" EntitySet="Proyecto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_Grupo" Association="Self.FK_Proyecto_Grupo">
+      <End Role="Grupo" EntitySet="Grupo" />
+      <End Role="Proyecto" EntitySet="Proyecto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tarea_Proyecto" Association="Self.FK_Tarea_Proyecto">
+      <End Role="Proyecto" EntitySet="Proyecto" />
+      <End Role="Tarea" EntitySet="Tarea" />
+    </AssociationSet>
+    <AssociationSet Name="AlumnoGrupo" Association="Self.AlumnoGrupo">
+      <End Role="Alumno" EntitySet="Alumno" />
+      <End Role="Grupo" EntitySet="Grupo" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+</Schema>
