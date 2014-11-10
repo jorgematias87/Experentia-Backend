@@ -12,7 +12,7 @@ using Experentia.Models;
 
 namespace Experentia.Controllers
 {
-    public class GrupoController : ApiController
+    public class ProyectoController : ApiController
     {
         private ExperentiaEntities db = new ExperentiaEntities();
 
@@ -26,39 +26,39 @@ namespace Experentia.Controllers
             return resp;
         }
 
-        // GET api/Grupo
-        public IQueryable<Grupo> GetGrupo()
+        // GET api/Proyecto
+        public IQueryable<Proyecto> GetProyecto()
         {
-            return db.Grupo;
+            return db.Proyecto;
         }
 
-        // GET api/Grupo/5
-        [ResponseType(typeof(Grupo))]
-        public IHttpActionResult GetGrupo(int id)
+        // GET api/Proyecto/5
+        [ResponseType(typeof(Proyecto))]
+        public IHttpActionResult GetProyecto(int id)
         {
-            Grupo grupo = db.Grupo.Find(id);
-            if (grupo == null)
+            Proyecto proyecto = db.Proyecto.Find(id);
+            if (proyecto == null)
             {
                 return NotFound();
             }
 
-            return Ok(grupo);
+            return Ok(proyecto);
         }
 
-        // PUT api/Grupo/5
-        public IHttpActionResult PutGrupo(int id, Grupo grupo)
+        // PUT api/Proyecto/5
+        public IHttpActionResult PutProyecto(int id, Proyecto proyecto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != grupo.id)
+            if (id != proyecto.id)
             {
                 return BadRequest();
             }
 
-            db.Entry(grupo).State = EntityState.Modified;
+            db.Entry(proyecto).State = EntityState.Modified;
 
             try
             {
@@ -66,7 +66,7 @@ namespace Experentia.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GrupoExists(id))
+                if (!ProyectoExists(id))
                 {
                     return NotFound();
                 }
@@ -79,35 +79,35 @@ namespace Experentia.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST api/Grupo
-        [ResponseType(typeof(Grupo))]
-        public IHttpActionResult PostGrupo(Grupo grupo)
+        // POST api/Proyecto
+        [ResponseType(typeof(Proyecto))]
+        public IHttpActionResult PostProyecto(Proyecto proyecto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Grupo.Add(grupo);
+            db.Proyecto.Add(proyecto);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = grupo.id }, grupo);
+            return CreatedAtRoute("DefaultApi", new { id = proyecto.id }, proyecto);
         }
 
-        // DELETE api/Grupo/5
-        [ResponseType(typeof(Grupo))]
-        public IHttpActionResult DeleteGrupo(int id)
+        // DELETE api/Proyecto/5
+        [ResponseType(typeof(Proyecto))]
+        public IHttpActionResult DeleteProyecto(int id)
         {
-            Grupo grupo = db.Grupo.Find(id);
-            if (grupo == null)
+            Proyecto proyecto = db.Proyecto.Find(id);
+            if (proyecto == null)
             {
                 return NotFound();
             }
 
-            db.Grupo.Remove(grupo);
+            db.Proyecto.Remove(proyecto);
             db.SaveChanges();
 
-            return Ok(grupo);
+            return Ok(proyecto);
         }
 
         protected override void Dispose(bool disposing)
@@ -119,9 +119,9 @@ namespace Experentia.Controllers
             base.Dispose(disposing);
         }
 
-        private bool GrupoExists(int id)
+        private bool ProyectoExists(int id)
         {
-            return db.Grupo.Count(e => e.id == id) > 0;
+            return db.Proyecto.Count(e => e.id == id) > 0;
         }
     }
 }
