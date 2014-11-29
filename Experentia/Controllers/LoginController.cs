@@ -38,7 +38,7 @@ namespace Experentia.Controllers
         //    var coordinador = (from c in db.Coordinador
         //                 where c.email == usuario.Email
         //                 select c).FirstOrDefault();
-            
+
         //    var alumno = (from c in db.Alumno
         //                  where c.email == usuario.Email
         //                  select c).FirstOrDefault();
@@ -63,7 +63,7 @@ namespace Experentia.Controllers
         //        }
         //    }
         // }
-        
+
 
         // GET api/login/5
         public string Get(int id)
@@ -90,8 +90,11 @@ namespace Experentia.Controllers
 
             if (empresa != null)
             { 
-                //return empresa; 
-                responseOk = Request.CreateResponse(HttpStatusCode.OK, empresa);
+                //return empresa;
+
+                var jsonEmpresa = new {email = empresa.email , id = empresa.id, razonSocial = empresa.razonSocial, user = "empresa"};
+                
+                responseOk = Request.CreateResponse(HttpStatusCode.OK, jsonEmpresa);
 
                 return responseOk;
             }
@@ -100,7 +103,9 @@ namespace Experentia.Controllers
                 if (coordinador != null)
                 {
                     //return coordinador;
-                    responseOk = Request.CreateResponse(HttpStatusCode.OK, coordinador);
+                    var jsonCoordinador = new { email = coordinador.email , id = coordinador.id, nombre = coordinador.nombre, apellido = coordinador.apellido, user = "coordinador" };
+
+                    responseOk = Request.CreateResponse(HttpStatusCode.OK, jsonCoordinador);
 
                     return responseOk;
                 }
@@ -108,6 +113,8 @@ namespace Experentia.Controllers
                 {
                     if (alumno != null) { 
                         //return alumno; 
+                        var jsonAlumno = new { email = alumno.email, id = alumno.id, nombre= alumno.nombre, apellido= alumno.apellido, Grupo= alumno.Grupo, user = "alumno" };
+
                         responseOk = Request.CreateResponse(HttpStatusCode.OK, alumno);
 
                         return responseOk;
