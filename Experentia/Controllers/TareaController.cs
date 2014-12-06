@@ -32,17 +32,45 @@ namespace Experentia.Controllers
             return db.Tarea;
         }
 
-        // GET api/Tarea/5
-        [ResponseType(typeof(Tarea))]
-        public IHttpActionResult GetTarea(int id)
-        {
-            Tarea tarea = db.Tarea.Find(id);
-            if (tarea == null)
-            {
-                return NotFound();
-            }
+        //// GET api/Tarea/5
+        //[ResponseType(typeof(Tarea))]
+        //public IHttpActionResult GetTarea(int id)
+        //{
+        //    Tarea tarea = db.Tarea.Find(id);
+        //    if (tarea == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(tarea);
+        //    return Ok(tarea);
+        //}
+
+        public HttpResponseMessage GetTarea(int id)
+        {
+            //Tarea proyecto = db.Proyecto.Find(id);
+            //if (proyecto == null)
+            //{
+            //    return NotFound();
+            //}
+            HttpResponseMessage responseOk;
+            //return empresa;
+            var tareas = (from c in db.Tarea
+                          where c.idProyecto == id
+                          select c).ToList();
+            //string [] jsonTareas = new string[tareas.Count];
+            if (tareas != null)
+            {
+                responseOk = Request.CreateResponse(HttpStatusCode.OK, tareas);
+
+                return responseOk;
+            }
+            else
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.Unauthorized, "Error");
+
+                return responseError;
+                //return null;
+            }
         }
 
         // PUT api/Tarea/5
@@ -123,5 +151,6 @@ namespace Experentia.Controllers
         {
             return db.Tarea.Count(e => e.id == id) > 0;
         }
+
     }
 }
