@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="id" />
@@ -73,8 +73,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
-          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
+          <Property Name="descripcion" Type="varchar(max)" />
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="tecnologia" Type="varchar" MaxLength="50" />
           <Property Name="fechaLimite" Type="datetime" />
@@ -101,8 +101,9 @@
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="calificacion" Type="int" />
           <Property Name="comentario" Type="varchar" MaxLength="50" />
-          <Property Name="fechaInicio" Type="datetime" />
+          <Property Name="fechaInicio" Type="date" />
           <Property Name="idProyecto" Type="int" Nullable="false" />
+          <Property Name="idAlumno" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_AlumnoGrupo_Alumno">
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -188,6 +189,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Tarea_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tarea">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tarea_Proyecto">
           <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
           <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
@@ -270,13 +283,16 @@
             <End Role="Grupo" EntitySet="Grupo" />
             <End Role="Proyecto" EntitySet="Proyecto" />
           </AssociationSet>
+          <AssociationSet Name="FK_Tarea_Alumno" Association="Self.FK_Tarea_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Tarea" EntitySet="Tarea" />
+          </AssociationSet>
           <AssociationSet Name="FK_Tarea_Proyecto" Association="Self.FK_Tarea_Proyecto">
             <End Role="Proyecto" EntitySet="Proyecto" />
             <End Role="Tarea" EntitySet="Tarea" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExperentiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -291,6 +307,7 @@
           <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Grupo" Relationship="Self.AlumnoGrupo" FromRole="Alumno" ToRole="Grupo" />
+          <NavigationProperty Name="Tarea" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
         </EntityType>
         <EntityType Name="Comision">
           <Key>
@@ -350,8 +367,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fechaLimite" Type="DateTime" Precision="3" />
@@ -381,9 +398,11 @@
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="calificacion" Type="Int32" />
           <Property Name="comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="fechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="fechaInicio" Type="DateTime" Precision="0" />
           <Property Name="idProyecto" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
+          <Property Name="idAlumno" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Alumno" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
         </EntityType>
         <Association Name="FK_Grupo_Comision">
           <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
@@ -529,7 +548,23 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_Tarea_Alumno" Association="ExperentiaModel.FK_Tarea_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Tarea" EntitySet="Tarea" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Tarea_Alumno">
+          <End Type="ExperentiaModel.Alumno" Role="Alumno" Multiplicity="1" />
+          <End Type="ExperentiaModel.Tarea" Role="Tarea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tarea">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -625,6 +660,7 @@
           <EntitySetMapping Name="Tarea">
             <EntityTypeMapping TypeName="ExperentiaModel.Tarea">
               <MappingFragment StoreEntitySet="Tarea">
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />

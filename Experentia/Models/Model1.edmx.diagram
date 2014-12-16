@@ -21,6 +21,7 @@
         <AssociationConnector Association="ExperentiaModel.FK_Proyecto_Grupo" ManuallyRouted="false" />
         <AssociationConnector Association="ExperentiaModel.FK_Tarea_Proyecto" ManuallyRouted="false" />
         <AssociationConnector Association="ExperentiaModel.AlumnoGrupo" ManuallyRouted="false" />
+        <AssociationConnector Association="ExperentiaModel.FK_Tarea_Alumno" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

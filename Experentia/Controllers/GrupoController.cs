@@ -45,6 +45,32 @@ namespace Experentia.Controllers
             return Ok(grupo);
         }
 
+
+        //public IHttpActionResult AgregarAlumnosAGrupo(int id, IQueryable<Alumno> db.Alumno/*List<Alumno> alumnos*/ )//recibe el id del grupo
+        //{
+        //    Grupo miGrupo = db.Grupo.Find(id);
+        //    if (miGrupo == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (alumnos != null)
+        //    {
+        //      foreach (Alumno mialumno in alumnos)
+        //      {
+        //        miGrupo.Alumno.Add(mialumno);
+        //        ctx.Grupo.AddObject(miGrupo);
+        //        //ctx.SaveChanges();
+        //      }
+        //    }
+
+
+        //    return Ok(grupo);
+        //}
+
+
+
+
         // PUT api/Grupo/5
         public IHttpActionResult PutGrupo(int id, Grupo grupo)
         {

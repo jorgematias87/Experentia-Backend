@@ -90,6 +90,7 @@
     <EntitySetMapping Name="Tarea">
       <EntityTypeMapping TypeName="ExperentiaModel.Tarea">
         <MappingFragment StoreEntitySet="Tarea">
+          <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="descripcion" ColumnName="descripcion" />

@@ -16,3 +16,21 @@ c:\users\asus\documents\visual studio 2013\Projects\Experentia\Experentia\bin\Sy
 c:\users\asus\documents\visual studio 2013\Projects\Experentia\Experentia\obj\Debug\Experentia.csprojResolveAssemblyReference.cache
 c:\users\asus\documents\visual studio 2013\Projects\Experentia\Experentia\obj\Debug\Experentia.dll
 c:\users\asus\documents\visual studio 2013\Projects\Experentia\Experentia\obj\Debug\Experentia.pdb
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\Experentia.dll.config
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\Experentia.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\Experentia.pdb
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\EntityFramework.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\EntityFramework.SqlServer.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\Newtonsoft.Json.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Net.Http.Formatting.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.WebHost.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\EntityFramework.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\EntityFramework.SqlServer.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\Newtonsoft.Json.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Net.Http.Formatting.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.WebHost.xml
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.csprojResolveAssemblyReference.cache
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.dll
+C:\Users\jcorrales\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.pdb

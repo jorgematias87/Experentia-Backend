@@ -22,7 +22,9 @@ namespace Experentia.Models
         public string comentario { get; set; }
         public Nullable<System.DateTime> fechaInicio { get; set; }
         public int idProyecto { get; set; }
+        public int idAlumno { get; set; }
     
         public virtual Proyecto Proyecto { get; set; }
+        public virtual Alumno Alumno { get; set; }
     }
 }

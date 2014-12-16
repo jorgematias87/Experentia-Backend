@@ -20,7 +20,6 @@ namespace Experentia.Models
         public ExperentiaEntities()
             : base("name=ExperentiaEntities")
         {
-            this.Configuration.ProxyCreationEnabled = false; 
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

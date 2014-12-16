@@ -17,6 +17,7 @@ namespace Experentia.Models
         public Alumno()
         {
             this.Grupo = new HashSet<Grupo>();
+            this.Tarea = new HashSet<Tarea>();
         }
     
         public int id { get; set; }
@@ -27,5 +28,6 @@ namespace Experentia.Models
         public bool estado { get; set; }
     
         public virtual ICollection<Grupo> Grupo { get; set; }
+        public virtual ICollection<Tarea> Tarea { get; set; }
     }
 }

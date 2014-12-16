@@ -68,8 +68,8 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
-    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
+    <Property Name="descripcion" Type="varchar(max)" />
     <Property Name="estado" Type="varchar" MaxLength="50" />
     <Property Name="tecnologia" Type="varchar" MaxLength="50" />
     <Property Name="fechaLimite" Type="datetime" />
@@ -96,8 +96,9 @@
     <Property Name="estado" Type="varchar" MaxLength="50" />
     <Property Name="calificacion" Type="int" />
     <Property Name="comentario" Type="varchar" MaxLength="50" />
-    <Property Name="fechaInicio" Type="datetime" />
+    <Property Name="fechaInicio" Type="date" />
     <Property Name="idProyecto" Type="int" Nullable="false" />
+    <Property Name="idAlumno" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_AlumnoGrupo_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -183,6 +184,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Tarea_Alumno">
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+    <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumno">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Tarea">
+        <PropertyRef Name="idAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Tarea_Proyecto">
     <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
     <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
@@ -264,6 +277,10 @@
     <AssociationSet Name="FK_Proyecto_Grupo" Association="Self.FK_Proyecto_Grupo">
       <End Role="Grupo" EntitySet="Grupo" />
       <End Role="Proyecto" EntitySet="Proyecto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tarea_Alumno" Association="Self.FK_Tarea_Alumno">
+      <End Role="Alumno" EntitySet="Alumno" />
+      <End Role="Tarea" EntitySet="Tarea" />
     </AssociationSet>
     <AssociationSet Name="FK_Tarea_Proyecto" Association="Self.FK_Tarea_Proyecto">
       <End Role="Proyecto" EntitySet="Proyecto" />
