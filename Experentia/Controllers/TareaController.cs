@@ -33,7 +33,7 @@ namespace Experentia.Controllers
             return db.Tarea;
         }
 
-        //// GET api/Tarea/5
+        //// get api/tarea/5
         //[ResponseType(typeof(Tarea))]
         //public IHttpActionResult GetTarea(int id)
         //{
@@ -48,35 +48,30 @@ namespace Experentia.Controllers
 
         public HttpResponseMessage GetTarea(int id)
         {
-            //Tarea proyecto = db.Proyecto.Find(id);
-            //if (proyecto == null)
-            //{
-            //    return NotFound();
-            //}
             HttpResponseMessage responseOk;
             //return empresa;
             var tareas = (from c in db.Tarea
                           where c.idProyecto == id
                           select c).ToList();
             List<TareaMapeada> misTareas = new List<TareaMapeada>();
-            foreach(Tarea miTarea in tareas)
+            foreach (Tarea miTarea in tareas)
             {
-             var alumno = (from c in db.Alumno
-                                 where c.id == miTarea.idAlumno
-                                 select c).FirstOrDefault();
-             TareaMapeada miTareaMapeada = new TareaMapeada();
-             miTareaMapeada.Id = Convert.ToString(miTarea.id);
-             miTareaMapeada.IdProyecto=Convert.ToString(miTarea.idProyecto);
-             miTareaMapeada.IdAlumno =Convert.ToString(miTarea.idAlumno);
-             miTareaMapeada.Nombre =miTarea.nombre;
-             miTareaMapeada.Descripcion=miTarea.descripcion;
-             miTareaMapeada.Estado=miTarea.estado;
-             miTareaMapeada.Calificacion = Convert.ToString(miTarea.calificacion);
-             //var fecha = DateTime.ParseExact(miTarea.fechaInicio.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-             //fecha.ToString("dd/MM/yyyy");
-             miTareaMapeada.FechaInicio = miTarea.fechaInicio.ToString();//"12/12/2014";//fecha.ToString();
-             miTareaMapeada.Alumno= alumno.nombre +" "+ alumno.apellido;
-             misTareas.Add(miTareaMapeada);
+                //var alumno = (from c in db.Alumno
+                //              where c.id == miTarea.idAlumno
+                //              select c).FirstOrDefault();
+                TareaMapeada miTareaMapeada = new TareaMapeada();
+                miTareaMapeada.Id = Convert.ToString(miTarea.id);
+                miTareaMapeada.IdProyecto = Convert.ToString(miTarea.idProyecto);
+                miTareaMapeada.IdAlumno = Convert.ToString(miTarea.idAlumno);
+                miTareaMapeada.Nombre = miTarea.nombre;
+                miTareaMapeada.Descripcion = miTarea.descripcion;
+                miTareaMapeada.Estado = miTarea.estado;
+                miTareaMapeada.Calificacion = Convert.ToString(miTarea.calificacion);
+                //var fecha = DateTime.ParseExact(miTarea.fechaInicio.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                //fecha.ToString("dd/MM/yyyy");
+                miTareaMapeada.FechaInicio = miTarea.fechaInicio;//"12/12/2014";//fecha.ToString();
+                //miTareaMapeada.Alumno = alumno.nombre + " " + alumno.apellido;
+                misTareas.Add(miTareaMapeada);
             }
             //string [] jsonTareas = new string[tareas.Count];
             if (tareas != null)
@@ -93,6 +88,7 @@ namespace Experentia.Controllers
                 //return null;
             }
         }
+
 
         // PUT api/Tarea/5
         public IHttpActionResult PutTarea(int id, Tarea tarea)

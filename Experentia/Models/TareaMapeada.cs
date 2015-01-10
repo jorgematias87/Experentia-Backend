@@ -47,9 +47,9 @@ namespace Experentia.Models
             set { calificacion = value; }
         }
 
-        private string fechaInicio;
+        private DateTime? fechaInicio;
 
-        public string FechaInicio
+        public DateTime? FechaInicio
         {
             get { return fechaInicio; }
             set { fechaInicio = value; }
@@ -70,16 +70,6 @@ namespace Experentia.Models
             get { return idAlumno; }
             set { idAlumno = value; }
         }
-
-
-        private string alumno;
-
-        public string  Alumno
-        {
-            get { return alumno; }
-            set { alumno = value; }
-        }
-        
         
     }
 }
