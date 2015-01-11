@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="id" />
@@ -73,8 +73,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar(max)" />
-          <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="tecnologia" Type="varchar" MaxLength="50" />
           <Property Name="fechaLimite" Type="datetime" />
@@ -101,9 +101,9 @@
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="calificacion" Type="int" />
           <Property Name="comentario" Type="varchar" MaxLength="50" />
-          <Property Name="fechaInicio" Type="date" />
+          <Property Name="fechaInicio" Type="datetime" />
           <Property Name="idProyecto" Type="int" Nullable="false" />
-          <Property Name="idAlumno" Type="int" Nullable="false" />
+          <Property Name="idAlumno" Type="int" />
         </EntityType>
         <Association Name="FK_AlumnoGrupo_Alumno">
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -190,7 +190,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tarea_Alumno">
-          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
           <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Alumno">
@@ -292,7 +292,8 @@
             <End Role="Tarea" EntitySet="Tarea" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExperentiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -306,8 +307,8 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Tarea" Relationship="Self.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
           <NavigationProperty Name="Grupo" Relationship="Self.AlumnoGrupo" FromRole="Alumno" ToRole="Grupo" />
-          <NavigationProperty Name="Tarea" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
         </EntityType>
         <EntityType Name="Comision">
           <Key>
@@ -367,8 +368,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fechaLimite" Type="DateTime" Precision="3" />
@@ -398,12 +399,24 @@
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="calificacion" Type="Int32" />
           <Property Name="comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="fechaInicio" Type="DateTime" Precision="0" />
+          <Property Name="fechaInicio" Type="DateTime" Precision="3" />
           <Property Name="idProyecto" Type="Int32" Nullable="false" />
+          <Property Name="idAlumno" Type="Int32" />
+          <NavigationProperty Name="Alumno" Relationship="Self.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
           <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
-          <Property Name="idAlumno" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Alumno" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
         </EntityType>
+        <Association Name="FK_Tarea_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+          <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Tarea">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Grupo_Comision">
           <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
           <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
@@ -490,6 +503,10 @@
           <EntitySet Name="Proyecto" EntityType="Self.Proyecto" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tarea" EntityType="Self.Tarea" />
+          <AssociationSet Name="FK_Tarea_Alumno" Association="Self.FK_Tarea_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Tarea" EntitySet="Tarea" />
+          </AssociationSet>
           <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
             <End Role="Comision" EntitySet="Comision" />
             <End Role="Grupo" EntitySet="Grupo" />
@@ -534,11 +551,11 @@
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition">
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ExperentiaModel.sp_helpdiagramdefinition_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams">
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ExperentiaModel.sp_helpdiagrams_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -548,23 +565,18 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <AssociationSet Name="FK_Tarea_Alumno" Association="ExperentiaModel.FK_Tarea_Alumno">
-            <End Role="Alumno" EntitySet="Alumno" />
-            <End Role="Tarea" EntitySet="Tarea" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Tarea_Alumno">
-          <End Type="ExperentiaModel.Alumno" Role="Alumno" Multiplicity="1" />
-          <End Type="ExperentiaModel.Tarea" Role="Tarea" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Alumno">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Tarea">
-              <PropertyRef Name="idAlumno" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -660,7 +672,6 @@
           <EntitySetMapping Name="Tarea">
             <EntityTypeMapping TypeName="ExperentiaModel.Tarea">
               <MappingFragment StoreEntitySet="Tarea">
-                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -669,6 +680,7 @@
                 <ScalarProperty Name="comentario" ColumnName="comentario" />
                 <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
                 <ScalarProperty Name="idProyecto" ColumnName="idProyecto" />
+                <ScalarProperty Name="idAlumno" ColumnName="idAlumno" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -683,8 +695,25 @@
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ExperentiaModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ExperentiaModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ExperentiaModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ExperentiaModel.Store.sp_helpdiagramdefinition" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ExperentiaModel.Store.sp_helpdiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ExperentiaModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ExperentiaModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ExperentiaModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ExperentiaModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ExperentiaModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ExperentiaModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>

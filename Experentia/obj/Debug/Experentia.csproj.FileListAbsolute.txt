@@ -52,3 +52,21 @@ C:\Users\Asus\Documents\Visual Studio 2013\Projects\Experentia-Backend\Experenti
 C:\Users\Asus\Documents\Visual Studio 2013\Projects\Experentia-Backend\Experentia\obj\Debug\Experentia.csprojResolveAssemblyReference.cache
 C:\Users\Asus\Documents\Visual Studio 2013\Projects\Experentia-Backend\Experentia\obj\Debug\Experentia.dll
 C:\Users\Asus\Documents\Visual Studio 2013\Projects\Experentia-Backend\Experentia\obj\Debug\Experentia.pdb
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\Experentia.dll.config
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\Experentia.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\Experentia.pdb
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\EntityFramework.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\EntityFramework.SqlServer.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\Newtonsoft.Json.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Net.Http.Formatting.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.WebHost.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\EntityFramework.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\EntityFramework.SqlServer.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\Newtonsoft.Json.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Net.Http.Formatting.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\bin\System.Web.Http.WebHost.xml
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.dll
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.pdb
+C:\Users\addministrador\Documents\Experentia-Backend\Experentia\obj\Debug\Experentia.csprojResolveAssemblyReference.cache

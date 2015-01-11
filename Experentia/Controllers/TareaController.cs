@@ -33,9 +33,9 @@ namespace Experentia.Controllers
             return db.Tarea;
         }
 
-        //// get api/tarea/5
+        // get api/tarea/5
         //[ResponseType(typeof(Tarea))]
-        //public IHttpActionResult GetTarea(int id)
+        //public IHttpActionResult GetTarea(int id)// ESTE METODO ES PARA VER LOS DATOS DE LA TAREA
         //{
         //    Tarea tarea = db.Tarea.Find(id);
         //    if (tarea == null)
@@ -45,8 +45,9 @@ namespace Experentia.Controllers
 
         //    return Ok(tarea);
         //}
-
-        public HttpResponseMessage GetTarea(int id)
+        
+        // get api/tarea/5
+        public HttpResponseMessage GetTareasProyecto(int id)//obtiene las tareas del proyecto
         {
             HttpResponseMessage responseOk;
             //return empresa;
@@ -56,9 +57,11 @@ namespace Experentia.Controllers
             List<TareaMapeada> misTareas = new List<TareaMapeada>();
             foreach (Tarea miTarea in tareas)
             {
-                //var alumno = (from c in db.Alumno
-                //              where c.id == miTarea.idAlumno
-                //              select c).FirstOrDefault();
+               var alumno = (from c in db.Alumno
+                             where c.id == miTarea.idAlumno
+                             select c).FirstOrDefault();
+               
+                
                 TareaMapeada miTareaMapeada = new TareaMapeada();
                 miTareaMapeada.Id = Convert.ToString(miTarea.id);
                 miTareaMapeada.IdProyecto = Convert.ToString(miTarea.idProyecto);
@@ -67,10 +70,12 @@ namespace Experentia.Controllers
                 miTareaMapeada.Descripcion = miTarea.descripcion;
                 miTareaMapeada.Estado = miTarea.estado;
                 miTareaMapeada.Calificacion = Convert.ToString(miTarea.calificacion);
-                //var fecha = DateTime.ParseExact(miTarea.fechaInicio.ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                //fecha.ToString("dd/MM/yyyy");
-                miTareaMapeada.FechaInicio = miTarea.fechaInicio;//"12/12/2014";//fecha.ToString();
-                //miTareaMapeada.Alumno = alumno.nombre + " " + alumno.apellido;
+                miTareaMapeada.FechaInicio = miTarea.fechaInicio;
+                if (alumno != null) 
+                { 
+                    miTareaMapeada.Alumno = alumno.nombre + " " + alumno.apellido; 
+                }
+               
                 misTareas.Add(miTareaMapeada);
             }
             //string [] jsonTareas = new string[tareas.Count];
@@ -89,9 +94,9 @@ namespace Experentia.Controllers
             }
         }
 
-
+       
         // PUT api/Tarea/5
-        public IHttpActionResult PutTarea(int id, Tarea tarea)
+        public IHttpActionResult PutTarea(int id, Tarea tarea)//esta harcodeada abajo 
         {
             if (!ModelState.IsValid)
             {
@@ -103,7 +108,11 @@ namespace Experentia.Controllers
                 return BadRequest();
             }
 
-            db.Entry(tarea).State = EntityState.Modified;
+            //db.Entry(tarea).State = EntityState.Modified;
+            
+            tarea.descripcion = "nueva descripción";//en realidad estos campos no van solo se guarda el modelo tarea
+            tarea.calificacion = 9;//
+            tarea.comentario = "soy un comentario";//
 
             try
             {
@@ -132,7 +141,6 @@ namespace Experentia.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             db.Tarea.Add(tarea);
             db.SaveChanges();
 

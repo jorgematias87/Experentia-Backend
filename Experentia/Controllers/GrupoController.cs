@@ -46,30 +46,30 @@ namespace Experentia.Controllers
         }
 
 
-        //public IHttpActionResult AgregarAlumnosAGrupo(int id, IQueryable<Alumno> db.Alumno/*List<Alumno> alumnos*/ )//recibe el id del grupo
-        //{
-        //    Grupo miGrupo = db.Grupo.Find(id);
-        //    if (miGrupo == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public IHttpActionResult AgregarAlumnosAGrupo(int id/*, IQueryable<Alumno> db.Alumno List<Alumno> alumnos*/ )//recibe el id del grupo
+        {
 
-        //    if (alumnos != null)
-        //    {
-        //      foreach (Alumno mialumno in alumnos)
-        //      {
-        //        miGrupo.Alumno.Add(mialumno);
-        //        ctx.Grupo.AddObject(miGrupo);
-        //        //ctx.SaveChanges();
-        //      }
-        //    }
+            var alumnos = (from c in db.Alumno
+                           select c).ToList();
+            
+            Grupo miGrupo = db.Grupo.Find(id);
+            if (miGrupo == null)
+            {
+                return NotFound();
+            }
 
+            if (alumnos != null)
+            {
+              foreach (Alumno mialumno in alumnos)
+              {
+                miGrupo.Alumno.Add(mialumno);
+                db.Grupo.Add(miGrupo);
+                db.SaveChanges();
+              }
+            }
 
-        //    return Ok(grupo);
-        //}
-
-
-
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
         // PUT api/Grupo/5
         public IHttpActionResult PutGrupo(int id, Grupo grupo)

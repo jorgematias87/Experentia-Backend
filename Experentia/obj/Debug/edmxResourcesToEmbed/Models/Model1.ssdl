@@ -68,8 +68,8 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar(max)" />
-    <Property Name="descripcion" Type="varchar(max)" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="descripcion" Type="varchar" MaxLength="50" />
     <Property Name="estado" Type="varchar" MaxLength="50" />
     <Property Name="tecnologia" Type="varchar" MaxLength="50" />
     <Property Name="fechaLimite" Type="datetime" />
@@ -96,9 +96,9 @@
     <Property Name="estado" Type="varchar" MaxLength="50" />
     <Property Name="calificacion" Type="int" />
     <Property Name="comentario" Type="varchar" MaxLength="50" />
-    <Property Name="fechaInicio" Type="date" />
+    <Property Name="fechaInicio" Type="datetime" />
     <Property Name="idProyecto" Type="int" Nullable="false" />
-    <Property Name="idAlumno" Type="int" Nullable="false" />
+    <Property Name="idAlumno" Type="int" />
   </EntityType>
   <Association Name="FK_AlumnoGrupo_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -185,7 +185,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Tarea_Alumno">
-    <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
     <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Alumno">

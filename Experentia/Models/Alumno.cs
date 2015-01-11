@@ -16,8 +16,8 @@ namespace Experentia.Models
     {
         public Alumno()
         {
-            this.Grupo = new HashSet<Grupo>();
             this.Tarea = new HashSet<Tarea>();
+            this.Grupo = new HashSet<Grupo>();
         }
     
         public int id { get; set; }
@@ -27,7 +27,7 @@ namespace Experentia.Models
         public string contrasenia { get; set; }
         public bool estado { get; set; }
     
-        public virtual ICollection<Grupo> Grupo { get; set; }
         public virtual ICollection<Tarea> Tarea { get; set; }
+        public virtual ICollection<Grupo> Grupo { get; set; }
     }
 }

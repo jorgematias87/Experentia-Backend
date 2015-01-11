@@ -10,8 +10,8 @@
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="estado" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Tarea" Relationship="Self.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
     <NavigationProperty Name="Grupo" Relationship="Self.AlumnoGrupo" FromRole="Alumno" ToRole="Grupo" />
-    <NavigationProperty Name="Tarea" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
   </EntityType>
   <EntityType Name="Comision">
     <Key>
@@ -71,8 +71,8 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="fechaLimite" Type="DateTime" Precision="3" />
@@ -102,12 +102,24 @@
     <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="calificacion" Type="Int32" />
     <Property Name="comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="fechaInicio" Type="DateTime" Precision="0" />
+    <Property Name="fechaInicio" Type="DateTime" Precision="3" />
     <Property Name="idProyecto" Type="Int32" Nullable="false" />
+    <Property Name="idAlumno" Type="Int32" />
+    <NavigationProperty Name="Alumno" Relationship="Self.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
     <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
-    <Property Name="idAlumno" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Alumno" Relationship="ExperentiaModel.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
   </EntityType>
+  <Association Name="FK_Tarea_Alumno">
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+    <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumno">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Tarea">
+        <PropertyRef Name="idAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Grupo_Comision">
     <End Role="Comision" Type="Self.Comision" Multiplicity="0..1" />
     <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
@@ -194,6 +206,10 @@
     <EntitySet Name="Proyecto" EntityType="Self.Proyecto" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="Tarea" EntityType="Self.Tarea" />
+    <AssociationSet Name="FK_Tarea_Alumno" Association="Self.FK_Tarea_Alumno">
+      <End Role="Alumno" EntitySet="Alumno" />
+      <End Role="Tarea" EntitySet="Tarea" />
+    </AssociationSet>
     <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
       <End Role="Comision" EntitySet="Comision" />
       <End Role="Grupo" EntitySet="Grupo" />
@@ -238,11 +254,11 @@
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition">
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ExperentiaModel.sp_helpdiagramdefinition_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams">
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ExperentiaModel.sp_helpdiagrams_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -252,21 +268,16 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <AssociationSet Name="FK_Tarea_Alumno" Association="ExperentiaModel.FK_Tarea_Alumno">
-      <End Role="Alumno" EntitySet="Alumno" />
-      <End Role="Tarea" EntitySet="Tarea" />
-    </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_Tarea_Alumno">
-    <End Type="ExperentiaModel.Alumno" Role="Alumno" Multiplicity="1" />
-    <End Type="ExperentiaModel.Tarea" Role="Tarea" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Alumno">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="Tarea">
-        <PropertyRef Name="idAlumno" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>
