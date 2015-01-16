@@ -33,20 +33,20 @@ namespace Experentia.Controllers
             return db.Tarea;
         }
 
-        // get api/tarea/5
-        //[ResponseType(typeof(Tarea))]
-        //public IHttpActionResult GetTarea(int id)// ESTE METODO ES PARA VER LOS DATOS DE LA TAREA
-        //{
-        //    Tarea tarea = db.Tarea.Find(id);
-        //    if (tarea == null)
-        //    {
-        //        return NotFound();
-        //    }
+         //get api/tarea/5
+        [ResponseType(typeof(Tarea))]
+        public IHttpActionResult GetTarea(int id)// ESTE METODO ES PARA VER LOS DATOS DE LA TAREA
+        {
+            Tarea tarea = db.Tarea.Find(id);
+            if (tarea == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(tarea);
-        //}
+            return Ok(tarea);
+        }
         
-        // get api/tarea/5
+         //get api/tarea/5
         public HttpResponseMessage GetTareasProyecto(int id)//obtiene las tareas del proyecto
         {
             HttpResponseMessage responseOk;
