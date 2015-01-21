@@ -63,17 +63,17 @@ namespace Experentia.Controllers
                
                 
                 TareaMapeada miTareaMapeada = new TareaMapeada();
-                miTareaMapeada.Id = Convert.ToString(miTarea.id);
-                miTareaMapeada.IdProyecto = Convert.ToString(miTarea.idProyecto);
-                miTareaMapeada.IdAlumno = Convert.ToString(miTarea.idAlumno);
-                miTareaMapeada.Nombre = miTarea.nombre;
-                miTareaMapeada.Descripcion = miTarea.descripcion;
-                miTareaMapeada.Estado = miTarea.estado;
-                miTareaMapeada.Calificacion = Convert.ToString(miTarea.calificacion);
-                miTareaMapeada.FechaInicio = miTarea.fechaInicio;
+                miTareaMapeada.id = Convert.ToString(miTarea.id);
+                miTareaMapeada.idProyecto = Convert.ToString(miTarea.idProyecto);
+                miTareaMapeada.idAlumno = Convert.ToString(miTarea.idAlumno);
+                miTareaMapeada.nombre = miTarea.nombre;
+                miTareaMapeada.descripcion = miTarea.descripcion;
+                miTareaMapeada.estado = miTarea.estado;
+                miTareaMapeada.calificacion = Convert.ToString(miTarea.calificacion);
+                miTareaMapeada.fechaInicio = miTarea.fechaInicio;
                 if (alumno != null) 
                 { 
-                    miTareaMapeada.Alumno = alumno.nombre + " " + alumno.apellido; 
+                    miTareaMapeada.alumno = alumno.nombre + " " + alumno.apellido; 
                 }
                
                 misTareas.Add(miTareaMapeada);

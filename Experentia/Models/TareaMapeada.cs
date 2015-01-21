@@ -7,76 +7,76 @@ namespace Experentia.Models
 {
     public class TareaMapeada
     {
-        private string id;
+        private string Id;
 
-        public string Id
+        public string id
         {
-            get { return id; }
-            set { id = value; }
+            get { return Id; }
+            set { Id = value; }
         }
 
-        private string nombre;
+        private string Nombre;
 
-        public string Nombre
+        public string nombre
         {
-            get { return nombre; }
-            set { nombre = value; }
+            get { return Nombre; }
+            set { Nombre = value; }
         }
 
-        private string descripcion;
+        private string Descripcion;
 
-        public string Descripcion
+        public string descripcion
         {
-            get { return descripcion; }
-            set { descripcion = value; }
+            get { return Descripcion; }
+            set { Descripcion = value; }
         }
 
-        private string estado;
+        private string Estado;
 
-        public string Estado
+        public string estado
         {
-            get { return estado; }
-            set { estado = value; }
+            get { return Estado; }
+            set { Estado = value; }
         }
 
-        private string calificacion;
+        private string Calificacion;
 
-        public string Calificacion
+        public string calificacion
         {
-            get { return calificacion; }
-            set { calificacion = value; }
+            get { return Calificacion; }
+            set { Calificacion = value; }
         }
 
-        private DateTime? fechaInicio;
+        private DateTime? FechaInicio;
 
-        public DateTime? FechaInicio
+        public DateTime? fechaInicio
         {
-            get { return fechaInicio; }
-            set { fechaInicio = value; }
+            get { return FechaInicio; }
+            set { FechaInicio = value; }
         }
 
-        private string idProyecto;
+        private string IdProyecto;
 
-        public string IdProyecto
+        public string idProyecto
         {
-            get { return idProyecto; }
-            set { idProyecto = value; }
+            get { return IdProyecto; }
+            set { IdProyecto = value; }
         }
 
-        private string idAlumno;
+        private string IdAlumno;
 
-        public string IdAlumno
+        public string idAlumno
         {
-            get { return idAlumno; }
-            set { idAlumno = value; }
+            get { return IdAlumno; }
+            set { IdAlumno = value; }
         }
 
-        private string alumno;
+        private string Alumno;
 
-        public string Alumno
+        public string alumno
         {
-            get { return alumno; }
-            set { alumno = value; }
+            get { return Alumno; }
+            set { Alumno = value; }
         }
         
         
