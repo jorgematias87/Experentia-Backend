@@ -115,7 +115,7 @@ namespace Experentia.Controllers
                         //return alumno; 
                         var jsonAlumno = new { email = alumno.email, id = alumno.id, nombre= alumno.nombre, apellido= alumno.apellido, Grupo= alumno.Grupo, user = "alumno" };
 
-                        responseOk = Request.CreateResponse(HttpStatusCode.OK, alumno);
+                        responseOk = Request.CreateResponse(HttpStatusCode.OK, jsonAlumno);
 
                         return responseOk;
                     }

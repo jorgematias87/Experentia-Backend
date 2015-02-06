@@ -108,11 +108,11 @@ namespace Experentia.Controllers
                 return BadRequest();
             }
 
-            //db.Entry(tarea).State = EntityState.Modified;
+            db.Entry(tarea).State = EntityState.Modified;
             
-            tarea.descripcion = "nueva descripción";//en realidad estos campos no van solo se guarda el modelo tarea
-            tarea.calificacion = 9;//
-            tarea.comentario = "soy un comentario";//
+            //tarea.descripcion = "nueva descripción";//en realidad estos campos no van solo se guarda el modelo tarea
+            //tarea.calificacion = 9;//
+            //tarea.comentario = "soy un comentario";//
 
             try
             {
