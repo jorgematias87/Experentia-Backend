@@ -24,6 +24,7 @@ namespace Experentia.Models
         public string nombre { get; set; }
         public string tecnologia { get; set; }
         public Nullable<int> idComision { get; set; }
+        public Nullable<System.DateTime> fechaCreacion { get; set; }
     
         public virtual Comision Comision { get; set; }
         public virtual ICollection<Proyecto> Proyecto { get; set; }

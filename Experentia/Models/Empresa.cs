@@ -14,16 +14,9 @@ namespace Experentia.Models
     
     public partial class Empresa
     {
-        public Empresa()
-        {
-            this.Proyecto = new HashSet<Proyecto>();
-        }
-    
         public int id { get; set; }
         public string razonSocial { get; set; }
         public string email { get; set; }
         public string contrasenia { get; set; }
-    
-        public virtual ICollection<Proyecto> Proyecto { get; set; }
     }
 }

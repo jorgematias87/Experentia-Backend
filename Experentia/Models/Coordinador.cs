@@ -14,13 +14,19 @@ namespace Experentia.Models
     
     public partial class Coordinador
     {
+        public Coordinador()
+        {
+            this.Proyecto = new HashSet<Proyecto>();
+            this.Materia = new HashSet<Materia>();
+        }
+    
         public int id { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         public string email { get; set; }
         public string contrasenia { get; set; }
-        public Nullable<int> idMateria { get; set; }
     
-        public virtual Materia Materia { get; set; }
+        public virtual ICollection<Proyecto> Proyecto { get; set; }
+        public virtual ICollection<Materia> Materia { get; set; }
     }
 }

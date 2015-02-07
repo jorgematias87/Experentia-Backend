@@ -31,8 +31,8 @@
     <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="idMateria" Type="Int32" />
-    <NavigationProperty Name="Materia" Relationship="Self.FK_Coordinador_Materia" FromRole="Coordinador" ToRole="Materia" />
+    <NavigationProperty Name="Proyecto" Relationship="Self.FK_Proyecto_Coordinador" FromRole="Coordinador" ToRole="Proyecto" />
+    <NavigationProperty Name="Materia" Relationship="Self.CoordinadorMateria" FromRole="Coordinador" ToRole="Materia" />
   </EntityType>
   <EntityType Name="Empresa">
     <Key>
@@ -42,7 +42,6 @@
     <Property Name="razonSocial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Proyecto" Relationship="Self.FK_Proyecto_Empresa" FromRole="Empresa" ToRole="Proyecto" />
   </EntityType>
   <EntityType Name="Grupo">
     <Key>
@@ -52,6 +51,7 @@
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="idComision" Type="Int32" />
+    <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
     <NavigationProperty Name="Comision" Relationship="Self.FK_Grupo_Comision" FromRole="Grupo" ToRole="Comision" />
     <NavigationProperty Name="Proyecto" Relationship="Self.FK_Proyecto_Grupo" FromRole="Grupo" ToRole="Proyecto" />
     <NavigationProperty Name="Alumno" Relationship="Self.AlumnoGrupo" FromRole="Grupo" ToRole="Alumno" />
@@ -64,7 +64,7 @@
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="idComision" Type="Int32" />
     <NavigationProperty Name="Comision" Relationship="Self.FK_Materia_Comision" FromRole="Materia" ToRole="Comision" />
-    <NavigationProperty Name="Coordinador" Relationship="Self.FK_Coordinador_Materia" FromRole="Materia" ToRole="Coordinador" />
+    <NavigationProperty Name="Coordinador" Relationship="Self.CoordinadorMateria" FromRole="Materia" ToRole="Coordinador" />
   </EntityType>
   <EntityType Name="Proyecto">
     <Key>
@@ -78,7 +78,9 @@
     <Property Name="fechaLimite" Type="DateTime" Precision="3" />
     <Property Name="idGrupo" Type="Int32" />
     <Property Name="idEmpresa" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Empresa" Relationship="Self.FK_Proyecto_Empresa" FromRole="Proyecto" ToRole="Empresa" />
+    <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
+    <Property Name="idCoordinador" Type="Int32" />
+    <NavigationProperty Name="Coordinador" Relationship="Self.FK_Proyecto_Coordinador" FromRole="Proyecto" ToRole="Coordinador" />
     <NavigationProperty Name="Grupo" Relationship="Self.FK_Proyecto_Grupo" FromRole="Proyecto" ToRole="Grupo" />
     <NavigationProperty Name="Tarea" Relationship="Self.FK_Tarea_Proyecto" FromRole="Proyecto" ToRole="Tarea" />
   </EntityType>
@@ -105,6 +107,7 @@
     <Property Name="fechaInicio" Type="DateTime" Precision="3" />
     <Property Name="idProyecto" Type="Int32" Nullable="false" />
     <Property Name="idAlumno" Type="Int32" />
+    <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
     <NavigationProperty Name="Alumno" Relationship="Self.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
     <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
   </EntityType>
@@ -144,27 +147,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Coordinador_Materia">
-    <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
-    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Materia">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="Coordinador">
-        <PropertyRef Name="idMateria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Proyecto_Empresa">
-    <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+  <Association Name="FK_Proyecto_Coordinador">
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="0..1" />
     <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Empresa">
+      <Principal Role="Coordinador">
         <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Proyecto">
-        <PropertyRef Name="idEmpresa" />
+        <PropertyRef Name="idCoordinador" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -196,6 +187,10 @@
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="*" />
     <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
   </Association>
+  <Association Name="CoordinadorMateria">
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
+    <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+  </Association>
   <EntityContainer Name="ExperentiaEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Alumno" EntityType="Self.Alumno" />
     <EntitySet Name="Comision" EntityType="Self.Comision" />
@@ -218,12 +213,8 @@
       <End Role="Comision" EntitySet="Comision" />
       <End Role="Materia" EntitySet="Materia" />
     </AssociationSet>
-    <AssociationSet Name="FK_Coordinador_Materia" Association="Self.FK_Coordinador_Materia">
-      <End Role="Materia" EntitySet="Materia" />
+    <AssociationSet Name="FK_Proyecto_Coordinador" Association="Self.FK_Proyecto_Coordinador">
       <End Role="Coordinador" EntitySet="Coordinador" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Proyecto_Empresa" Association="Self.FK_Proyecto_Empresa">
-      <End Role="Empresa" EntitySet="Empresa" />
       <End Role="Proyecto" EntitySet="Proyecto" />
     </AssociationSet>
     <AssociationSet Name="FK_Proyecto_Grupo" Association="Self.FK_Proyecto_Grupo">
@@ -237,6 +228,10 @@
     <AssociationSet Name="AlumnoGrupo" Association="Self.AlumnoGrupo">
       <End Role="Alumno" EntitySet="Alumno" />
       <End Role="Grupo" EntitySet="Grupo" />
+    </AssociationSet>
+    <AssociationSet Name="CoordinadorMateria" Association="Self.CoordinadorMateria">
+      <End Role="Coordinador" EntitySet="Coordinador" />
+      <End Role="Materia" EntitySet="Materia" />
     </AssociationSet>
     <FunctionImport Name="sp_alterdiagram">
       <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -254,11 +249,11 @@
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ExperentiaModel.sp_helpdiagramdefinition_Result)">
+    <FunctionImport Name="sp_helpdiagramdefinition">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ExperentiaModel.sp_helpdiagrams_Result)">
+    <FunctionImport Name="sp_helpdiagrams">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -269,15 +264,4 @@
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
-  <ComplexType Name="sp_helpdiagramdefinition_Result">
-    <Property Type="Int32" Name="version" Nullable="true" />
-    <Property Type="Binary" Name="definition" Nullable="true" />
-  </ComplexType>
-  <ComplexType Name="sp_helpdiagrams_Result">
-    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-    <Property Type="Int32" Name="ID" Nullable="false" />
-    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-    <Property Type="Int32" Name="OwnerID" Nullable="false" />
-  </ComplexType>
 </Schema>

@@ -27,8 +27,10 @@ namespace Experentia.Models
         public Nullable<System.DateTime> fechaLimite { get; set; }
         public Nullable<int> idGrupo { get; set; }
         public int idEmpresa { get; set; }
+        public Nullable<System.DateTime> fechaCreacion { get; set; }
+        public Nullable<int> idCoordinador { get; set; }
     
-        public virtual Empresa Empresa { get; set; }
+        public virtual Coordinador Coordinador { get; set; }
         public virtual Grupo Grupo { get; set; }
         public virtual ICollection<Tarea> Tarea { get; set; }
     }

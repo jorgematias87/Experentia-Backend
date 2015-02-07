@@ -88,6 +88,7 @@
     <Compile Include="Controllers\AlumnoController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MateriaController.cs" />
     <Compile Include="Controllers\ProyectoController.cs" />
     <Compile Include="Controllers\TareaController.cs" />
     <Compile Include="Global.asax.cs">
@@ -129,12 +130,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Proyecto.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagrams.cs">

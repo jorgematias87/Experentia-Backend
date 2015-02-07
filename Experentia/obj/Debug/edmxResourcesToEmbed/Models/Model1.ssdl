@@ -35,7 +35,14 @@
     <Property Name="apellido" Type="varchar" MaxLength="50" />
     <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="idMateria" Type="int" />
+  </EntityType>
+  <EntityType Name="CoordinadorMateria">
+    <Key>
+      <PropertyRef Name="idMateria" />
+      <PropertyRef Name="idCoordinador" />
+    </Key>
+    <Property Name="idMateria" Type="int" Nullable="false" />
+    <Property Name="idCoordinador" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Empresa">
     <Key>
@@ -54,6 +61,7 @@
     <Property Name="nombre" Type="varchar" MaxLength="50" />
     <Property Name="tecnologia" Type="varchar" MaxLength="50" />
     <Property Name="idComision" Type="int" />
+    <Property Name="fechaCreacion" Type="datetime" />
   </EntityType>
   <EntityType Name="Materia">
     <Key>
@@ -75,6 +83,8 @@
     <Property Name="fechaLimite" Type="datetime" />
     <Property Name="idGrupo" Type="int" />
     <Property Name="idEmpresa" Type="int" Nullable="false" />
+    <Property Name="fechaCreacion" Type="datetime" />
+    <Property Name="idCoordinador" Type="int" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -99,6 +109,7 @@
     <Property Name="fechaInicio" Type="datetime" />
     <Property Name="idProyecto" Type="int" Nullable="false" />
     <Property Name="idAlumno" Type="int" />
+    <Property Name="fechaCreacion" Type="datetime" />
   </EntityType>
   <Association Name="FK_AlumnoGrupo_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
@@ -124,15 +135,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Coordinador_Materia">
-    <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
-    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
+  <Association Name="FK_CoordinadorMateria">
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="1" />
+    <End Role="CoordinadorMateria" Type="Self.CoordinadorMateria" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Materia">
+      <Principal Role="Coordinador">
         <PropertyRef Name="id" />
       </Principal>
-      <Dependent Role="Coordinador">
-        <PropertyRef Name="idMateria" />
+      <Dependent Role="CoordinadorMateria">
+        <PropertyRef Name="idCoordinador" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -160,15 +171,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Proyecto_Empresa">
-    <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+  <Association Name="FK_MateriaCoordinador">
+    <End Role="Materia" Type="Self.Materia" Multiplicity="1" />
+    <End Role="CoordinadorMateria" Type="Self.CoordinadorMateria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="CoordinadorMateria">
+        <PropertyRef Name="idMateria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Proyecto_Coordinador">
+    <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="0..1" />
     <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Empresa">
+      <Principal Role="Coordinador">
         <PropertyRef Name="id" />
       </Principal>
       <Dependent Role="Proyecto">
-        <PropertyRef Name="idEmpresa" />
+        <PropertyRef Name="idCoordinador" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -244,6 +267,7 @@
     <EntitySet Name="AlumnoGrupo" EntityType="Self.AlumnoGrupo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Comision" EntityType="Self.Comision" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Coordinador" EntityType="Self.Coordinador" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CoordinadorMateria" EntityType="Self.CoordinadorMateria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
@@ -258,9 +282,9 @@
       <End Role="Grupo" EntitySet="Grupo" />
       <End Role="AlumnoGrupo" EntitySet="AlumnoGrupo" />
     </AssociationSet>
-    <AssociationSet Name="FK_Coordinador_Materia" Association="Self.FK_Coordinador_Materia">
-      <End Role="Materia" EntitySet="Materia" />
+    <AssociationSet Name="FK_CoordinadorMateria" Association="Self.FK_CoordinadorMateria">
       <End Role="Coordinador" EntitySet="Coordinador" />
+      <End Role="CoordinadorMateria" EntitySet="CoordinadorMateria" />
     </AssociationSet>
     <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
       <End Role="Comision" EntitySet="Comision" />
@@ -270,8 +294,12 @@
       <End Role="Comision" EntitySet="Comision" />
       <End Role="Materia" EntitySet="Materia" />
     </AssociationSet>
-    <AssociationSet Name="FK_Proyecto_Empresa" Association="Self.FK_Proyecto_Empresa">
-      <End Role="Empresa" EntitySet="Empresa" />
+    <AssociationSet Name="FK_MateriaCoordinador" Association="Self.FK_MateriaCoordinador">
+      <End Role="Materia" EntitySet="Materia" />
+      <End Role="CoordinadorMateria" EntitySet="CoordinadorMateria" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Proyecto_Coordinador" Association="Self.FK_Proyecto_Coordinador">
+      <End Role="Coordinador" EntitySet="Coordinador" />
       <End Role="Proyecto" EntitySet="Proyecto" />
     </AssociationSet>
     <AssociationSet Name="FK_Proyecto_Grupo" Association="Self.FK_Proyecto_Grupo">
