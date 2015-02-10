@@ -78,7 +78,9 @@ namespace Experentia.Models
             get { return Alumno; }
             set { Alumno = value; }
         }
-        
-        
+
+
+
+        public DateTime? fechaCreacion { get; set; }
     }
 }

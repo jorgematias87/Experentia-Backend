@@ -71,6 +71,7 @@ namespace Experentia.Controllers
                 miTareaMapeada.estado = miTarea.estado;
                 miTareaMapeada.calificacion = Convert.ToString(miTarea.calificacion);
                 miTareaMapeada.fechaInicio = miTarea.fechaInicio;
+                miTareaMapeada.fechaCreacion = miTarea.fechaCreacion;
                 if (alumno != null) 
                 { 
                     miTareaMapeada.alumno = alumno.nombre + " " + alumno.apellido; 

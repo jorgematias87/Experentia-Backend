@@ -45,6 +45,28 @@ namespace Experentia.Controllers
             return Ok(proyecto);
         }
 
+        // GET api/Proyecto/5
+        [ResponseType(typeof(Proyecto))]
+        public HttpResponseMessage GetProyectosById(int id)
+        {
+            HttpResponseMessage responseOk;
+
+            var proyectos = (from c in db.Proyecto
+                          where c.idCoordinador == id
+                          select c).ToList();
+
+            if (proyectos == null)
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.Unauthorized, "Error");
+
+                return responseError;
+            }
+
+            responseOk = Request.CreateResponse(HttpStatusCode.OK, proyectos);
+
+            return responseOk;
+        }
+
         // PUT api/Proyecto/5
         public IHttpActionResult PutProyecto(int id, Proyecto proyecto)
         {
