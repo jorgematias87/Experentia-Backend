@@ -20,6 +20,7 @@ namespace Experentia.Models
         public ExperentiaEntities()
             : base("name=ExperentiaEntities")
         {
+            Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

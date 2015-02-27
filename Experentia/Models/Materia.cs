@@ -16,6 +16,7 @@ namespace Experentia.Models
     {
         public Materia()
         {
+            this.Alumno = new HashSet<Alumno>();
             this.Coordinador = new HashSet<Coordinador>();
         }
     
@@ -24,6 +25,7 @@ namespace Experentia.Models
         public Nullable<int> idComision { get; set; }
     
         public virtual Comision Comision { get; set; }
+        public virtual ICollection<Alumno> Alumno { get; set; }
         public virtual ICollection<Coordinador> Coordinador { get; set; }
     }
 }

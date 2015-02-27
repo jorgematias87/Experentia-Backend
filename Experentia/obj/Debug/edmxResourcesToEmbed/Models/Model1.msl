@@ -113,6 +113,14 @@
         <ScalarProperty Name="id" ColumnName="idGrupo" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="AlumnoMateria" TypeName="ExperentiaModel.AlumnoMateria" StoreEntitySet="AlumnoMateria">
+      <EndProperty Name="Alumno">
+        <ScalarProperty Name="id" ColumnName="idAlumno" />
+      </EndProperty>
+      <EndProperty Name="Materia">
+        <ScalarProperty Name="id" ColumnName="idMateria" />
+      </EndProperty>
+    </AssociationSetMapping>
     <AssociationSetMapping Name="CoordinadorMateria" TypeName="ExperentiaModel.CoordinadorMateria" StoreEntitySet="CoordinadorMateria">
       <EndProperty Name="Coordinador">
         <ScalarProperty Name="id" ColumnName="idCoordinador" />

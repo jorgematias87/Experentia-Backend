@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ExperentiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="id" />
@@ -24,12 +24,20 @@
           <Property Name="idAlumno" Type="int" Nullable="false" />
           <Property Name="idGrupo" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="AlumnoMateria">
+          <Key>
+            <PropertyRef Name="idAlumno" />
+            <PropertyRef Name="idMateria" />
+          </Key>
+          <Property Name="idAlumno" Type="int" Nullable="false" />
+          <Property Name="idMateria" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Comision">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Coordinador">
           <Key>
@@ -54,7 +62,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="razonSocial" Type="varchar" MaxLength="50" />
+          <Property Name="razonSocial" Type="varchar(max)" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -63,8 +71,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
-          <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
+          <Property Name="tecnologia" Type="varchar(max)" />
           <Property Name="idComision" Type="int" />
           <Property Name="fechaCreacion" Type="datetime" />
         </EntityType>
@@ -73,7 +81,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
           <Property Name="idComision" Type="int" />
         </EntityType>
         <EntityType Name="Proyecto">
@@ -81,10 +89,10 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
-          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
+          <Property Name="descripcion" Type="varchar(max)" />
           <Property Name="estado" Type="varchar" MaxLength="50" />
-          <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+          <Property Name="tecnologia" Type="varchar(max)" />
           <Property Name="fechaLimite" Type="datetime" />
           <Property Name="idGrupo" Type="int" />
           <Property Name="idEmpresa" Type="int" Nullable="false" />
@@ -106,16 +114,28 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="50" />
-          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar(max)" />
+          <Property Name="descripcion" Type="varchar(max)" />
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="calificacion" Type="int" />
-          <Property Name="comentario" Type="varchar" MaxLength="50" />
+          <Property Name="comentario" Type="varchar(max)" />
           <Property Name="fechaInicio" Type="datetime" />
           <Property Name="idProyecto" Type="int" Nullable="false" />
           <Property Name="idAlumno" Type="int" />
           <Property Name="fechaCreacion" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Alumno">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+          <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="idAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AlumnoGrupo_Alumno">
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
           <End Role="AlumnoGrupo" Type="Self.AlumnoGrupo" Multiplicity="*" />
@@ -161,6 +181,18 @@
             </Principal>
             <Dependent Role="Grupo">
               <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Materia">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="1" />
+          <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="idMateria" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -270,6 +302,7 @@
         <EntityContainer Name="ExperentiaModelStoreContainer">
           <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AlumnoGrupo" EntityType="Self.AlumnoGrupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlumnoMateria" EntityType="Self.AlumnoMateria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comision" EntityType="Self.Comision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Coordinador" EntityType="Self.Coordinador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CoordinadorMateria" EntityType="Self.CoordinadorMateria" Schema="dbo" store:Type="Tables" />
@@ -279,6 +312,10 @@
           <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarea" EntityType="Self.Tarea" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Alumno" Association="Self.FK_Alumno">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+          </AssociationSet>
           <AssociationSet Name="FK_AlumnoGrupo_Alumno" Association="Self.FK_AlumnoGrupo_Alumno">
             <End Role="Alumno" EntitySet="Alumno" />
             <End Role="AlumnoGrupo" EntitySet="AlumnoGrupo" />
@@ -294,6 +331,10 @@
           <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
             <End Role="Comision" EntitySet="Comision" />
             <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Materia" Association="Self.FK_Materia">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
           </AssociationSet>
           <AssociationSet Name="FK_Materia_Comision" Association="Self.FK_Materia_Comision">
             <End Role="Comision" EntitySet="Comision" />
@@ -320,7 +361,8 @@
             <End Role="Tarea" EntitySet="Tarea" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExperentiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -336,13 +378,14 @@
           <Property Name="estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Tarea" Relationship="Self.FK_Tarea_Alumno" FromRole="Alumno" ToRole="Tarea" />
           <NavigationProperty Name="Grupo" Relationship="Self.AlumnoGrupo" FromRole="Alumno" ToRole="Grupo" />
+          <NavigationProperty Name="Materia" Relationship="Self.AlumnoMateria" FromRole="Alumno" ToRole="Materia" />
         </EntityType>
         <EntityType Name="Comision">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Grupo" Relationship="Self.FK_Grupo_Comision" FromRole="Comision" ToRole="Grupo" />
           <NavigationProperty Name="Materia" Relationship="Self.FK_Materia_Comision" FromRole="Comision" ToRole="Materia" />
         </EntityType>
@@ -363,7 +406,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="razonSocial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="razonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
@@ -372,8 +415,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="tecnologia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="idComision" Type="Int32" />
           <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Comision" Relationship="Self.FK_Grupo_Comision" FromRole="Grupo" ToRole="Comision" />
@@ -385,9 +428,10 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="idComision" Type="Int32" />
           <NavigationProperty Name="Comision" Relationship="Self.FK_Materia_Comision" FromRole="Materia" ToRole="Comision" />
+          <NavigationProperty Name="Alumno" Relationship="Self.AlumnoMateria" FromRole="Materia" ToRole="Alumno" />
           <NavigationProperty Name="Coordinador" Relationship="Self.CoordinadorMateria" FromRole="Materia" ToRole="Coordinador" />
         </EntityType>
         <EntityType Name="Proyecto">
@@ -395,10 +439,10 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tecnologia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tecnologia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fechaLimite" Type="DateTime" Precision="3" />
           <Property Name="idGrupo" Type="Int32" />
           <Property Name="idEmpresa" Type="Int32" Nullable="false" />
@@ -423,11 +467,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="calificacion" Type="Int32" />
-          <Property Name="comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="comentario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fechaInicio" Type="DateTime" Precision="3" />
           <Property Name="idProyecto" Type="Int32" Nullable="false" />
           <Property Name="idAlumno" Type="Int32" />
@@ -511,6 +555,10 @@
           <End Role="Alumno" Type="Self.Alumno" Multiplicity="*" />
           <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
         </Association>
+        <Association Name="AlumnoMateria">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="*" />
+          <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+        </Association>
         <Association Name="CoordinadorMateria">
           <End Role="Coordinador" Type="Self.Coordinador" Multiplicity="*" />
           <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
@@ -552,6 +600,10 @@
           <AssociationSet Name="AlumnoGrupo" Association="Self.AlumnoGrupo">
             <End Role="Alumno" EntitySet="Alumno" />
             <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <AssociationSet Name="AlumnoMateria" Association="Self.AlumnoMateria">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Materia" EntitySet="Materia" />
           </AssociationSet>
           <AssociationSet Name="CoordinadorMateria" Association="Self.CoordinadorMateria">
             <End Role="Coordinador" EntitySet="Coordinador" />
@@ -704,6 +756,14 @@
             </EndProperty>
             <EndProperty Name="Grupo">
               <ScalarProperty Name="id" ColumnName="idGrupo" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="AlumnoMateria" TypeName="ExperentiaModel.AlumnoMateria" StoreEntitySet="AlumnoMateria">
+            <EndProperty Name="Alumno">
+              <ScalarProperty Name="id" ColumnName="idAlumno" />
+            </EndProperty>
+            <EndProperty Name="Materia">
+              <ScalarProperty Name="id" ColumnName="idMateria" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CoordinadorMateria" TypeName="ExperentiaModel.CoordinadorMateria" StoreEntitySet="CoordinadorMateria">

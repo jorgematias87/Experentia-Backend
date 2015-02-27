@@ -14,6 +14,16 @@ namespace Experentia.Controllers
 {
     public class MateriaController : ApiController
     {
+        [AcceptVerbs("OPTIONS")]
+        public HttpResponseMessage Options()
+        {
+            var resp = new HttpResponseMessage(HttpStatusCode.OK);
+            resp.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+            resp.Headers.Add("Access-Control-Allow-Methods", "GET,DELETE,PUT,POST");
+
+            return resp;
+        }
+
         private ExperentiaEntities db = new ExperentiaEntities();
 
         // GET api/Materia
@@ -33,6 +43,26 @@ namespace Experentia.Controllers
             }
 
             return Ok(materia);
+        }
+
+         // GET api/Materia/5
+        public HttpResponseMessage GetMaterias(int id)
+        {
+            HttpResponseMessage responseOk;
+
+            List<Materia> materias = new List<Materia>();
+            materias = (from materia in db.Materia
+                        where materia.Coordinador.FirstOrDefault().id == id
+                        select materia).ToList();
+
+            if (materias == null)
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.NotFound, "Error");
+                return responseError;
+            }
+
+            responseOk = Request.CreateResponse(HttpStatusCode.OK, materias);
+            return responseOk;
         }
 
         // PUT api/Materia/5

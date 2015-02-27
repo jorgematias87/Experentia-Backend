@@ -18,6 +18,7 @@ namespace Experentia.Models
         {
             this.Tarea = new HashSet<Tarea>();
             this.Grupo = new HashSet<Grupo>();
+            this.Materia = new HashSet<Materia>();
         }
     
         public int id { get; set; }
@@ -29,5 +30,6 @@ namespace Experentia.Models
     
         public virtual ICollection<Tarea> Tarea { get; set; }
         public virtual ICollection<Grupo> Grupo { get; set; }
+        public virtual ICollection<Materia> Materia { get; set; }
     }
 }

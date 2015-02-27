@@ -95,6 +95,24 @@ namespace Experentia.Controllers
             }
         }
 
+         //GET api/Tarea/5
+        [ResponseType(typeof(Grupo))]
+        public IHttpActionResult GetTareasCoordinador(int id)
+        {
+            var tareas = (from tarea in db.Tarea
+                          join proyecto in db.Proyecto on tarea.idProyecto equals proyecto.id
+                          join alumno in db.Alumno on tarea.idAlumno equals alumno.id
+                          where proyecto.idCoordinador == id
+                          select new { item = tarea, alumnoNombre = alumno.nombre, alumnoApellido = alumno.apellido });
+
+            if (tareas == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(tareas);
+        }
+
        
         // PUT api/Tarea/5
         public IHttpActionResult PutTarea(int id, Tarea tarea)//esta harcodeada abajo 

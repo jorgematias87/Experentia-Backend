@@ -45,6 +45,49 @@ namespace Experentia.Controllers
             return Ok(alumno);
         }
 
+        // GET api/Alumno/5
+        [ResponseType(typeof(Alumno))]
+        public IHttpActionResult GetAlumnosByMateria(int id)
+        {
+            var alumnos = (from alumno in db.Alumno
+                        where alumno.Materia.FirstOrDefault().id == id
+                      select new { 
+                          id = alumno.id, 
+                          nombre = alumno.nombre,
+                          apellido = alumno.apellido,
+                          email = alumno.email
+                      });
+
+            if (alumnos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(alumnos);
+        }
+
+        // GET api/Alumno/5
+        [ResponseType(typeof(Alumno))]
+        public IHttpActionResult GetAlumnosByGrupo(int id)
+        {
+            var alumnos = (from alumno in db.Alumno
+                           where alumno.Grupo.FirstOrDefault().id == id
+                           select new
+                           {
+                               id = alumno.id,
+                               nombre = alumno.nombre,
+                               apellido = alumno.apellido,
+                               email = alumno.email
+                           });
+
+            if (alumnos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(alumnos);
+        }
+
         // PUT api/Alumno/5
         public IHttpActionResult PutAlumno(int id, Alumno alumno)
         {

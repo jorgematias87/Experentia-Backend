@@ -19,12 +19,20 @@
     <Property Name="idAlumno" Type="int" Nullable="false" />
     <Property Name="idGrupo" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="AlumnoMateria">
+    <Key>
+      <PropertyRef Name="idAlumno" />
+      <PropertyRef Name="idMateria" />
+    </Key>
+    <Property Name="idAlumno" Type="int" Nullable="false" />
+    <Property Name="idMateria" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Comision">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="Coordinador">
     <Key>
@@ -49,7 +57,7 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="razonSocial" Type="varchar" MaxLength="50" />
+    <Property Name="razonSocial" Type="varchar(max)" />
     <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
@@ -58,8 +66,8 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
-    <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
+    <Property Name="tecnologia" Type="varchar(max)" />
     <Property Name="idComision" Type="int" />
     <Property Name="fechaCreacion" Type="datetime" />
   </EntityType>
@@ -68,7 +76,7 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
     <Property Name="idComision" Type="int" />
   </EntityType>
   <EntityType Name="Proyecto">
@@ -76,10 +84,10 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
-    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
+    <Property Name="descripcion" Type="varchar(max)" />
     <Property Name="estado" Type="varchar" MaxLength="50" />
-    <Property Name="tecnologia" Type="varchar" MaxLength="50" />
+    <Property Name="tecnologia" Type="varchar(max)" />
     <Property Name="fechaLimite" Type="datetime" />
     <Property Name="idGrupo" Type="int" />
     <Property Name="idEmpresa" Type="int" Nullable="false" />
@@ -101,16 +109,28 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="50" />
-    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar(max)" />
+    <Property Name="descripcion" Type="varchar(max)" />
     <Property Name="estado" Type="varchar" MaxLength="50" />
     <Property Name="calificacion" Type="int" />
-    <Property Name="comentario" Type="varchar" MaxLength="50" />
+    <Property Name="comentario" Type="varchar(max)" />
     <Property Name="fechaInicio" Type="datetime" />
     <Property Name="idProyecto" Type="int" Nullable="false" />
     <Property Name="idAlumno" Type="int" />
     <Property Name="fechaCreacion" Type="datetime" />
   </EntityType>
+  <Association Name="FK_Alumno">
+    <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
+    <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumno">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="AlumnoMateria">
+        <PropertyRef Name="idAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_AlumnoGrupo_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />
     <End Role="AlumnoGrupo" Type="Self.AlumnoGrupo" Multiplicity="*" />
@@ -156,6 +176,18 @@
       </Principal>
       <Dependent Role="Grupo">
         <PropertyRef Name="idComision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Materia">
+    <End Role="Materia" Type="Self.Materia" Multiplicity="1" />
+    <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="AlumnoMateria">
+        <PropertyRef Name="idMateria" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -265,6 +297,7 @@
   <EntityContainer Name="ExperentiaModelStoreContainer">
     <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AlumnoGrupo" EntityType="Self.AlumnoGrupo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AlumnoMateria" EntityType="Self.AlumnoMateria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Comision" EntityType="Self.Comision" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Coordinador" EntityType="Self.Coordinador" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CoordinadorMateria" EntityType="Self.CoordinadorMateria" Schema="dbo" store:Type="Tables" />
@@ -274,6 +307,10 @@
     <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tarea" EntityType="Self.Tarea" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Alumno" Association="Self.FK_Alumno">
+      <End Role="Alumno" EntitySet="Alumno" />
+      <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+    </AssociationSet>
     <AssociationSet Name="FK_AlumnoGrupo_Alumno" Association="Self.FK_AlumnoGrupo_Alumno">
       <End Role="Alumno" EntitySet="Alumno" />
       <End Role="AlumnoGrupo" EntitySet="AlumnoGrupo" />
@@ -289,6 +326,10 @@
     <AssociationSet Name="FK_Grupo_Comision" Association="Self.FK_Grupo_Comision">
       <End Role="Comision" EntitySet="Comision" />
       <End Role="Grupo" EntitySet="Grupo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Materia" Association="Self.FK_Materia">
+      <End Role="Materia" EntitySet="Materia" />
+      <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
     </AssociationSet>
     <AssociationSet Name="FK_Materia_Comision" Association="Self.FK_Materia_Comision">
       <End Role="Comision" EntitySet="Comision" />

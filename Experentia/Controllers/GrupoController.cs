@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Experentia.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Experentia.Controllers
 {
@@ -26,49 +27,52 @@ namespace Experentia.Controllers
             return resp;
         }
 
-        // GET api/Grupo
-        public IQueryable<Grupo> GetGrupo()
-        {
-            return db.Grupo;
-        }
-
         // GET api/Grupo/5
         [ResponseType(typeof(Grupo))]
         public IHttpActionResult GetGrupo(int id)
         {
-            Grupo grupo = db.Grupo.Find(id);
-            if (grupo == null)
+            var Grupo = (from grupo in db.Grupo
+                        join materia in db.Materia on grupo.idComision equals materia.idComision
+                        where grupo.id == id
+                      select new { 
+                          id = grupo.id, 
+                          nombre = grupo.nombre, 
+                          tecnologia = grupo.tecnologia,
+                          fechaCreacion= grupo.fechaCreacion,
+                          materia= materia.nombre
+                      }).FirstOrDefault();
+
+            if (Grupo == null)
             {
                 return NotFound();
             }
 
-            return Ok(grupo);
+            return Ok(Grupo);
         }
 
-
-        public IHttpActionResult AgregarAlumnosAGrupo(int id/*, IQueryable<Alumno> db.Alumno List<Alumno> alumnos*/ )//recibe el id del grupo
+         //GET api/Grupo/5
+        [ResponseType(typeof(Grupo))]
+        public IHttpActionResult GetGrupos(int id)
         {
+            var grupos = (from grupo in db.Grupo
+                        join materia in db.Materia on grupo.idComision equals materia.idComision
+                        join comision in db.Comision on grupo.idComision equals comision.id
+                        where materia.Coordinador.FirstOrDefault().id == id
+                      select new { 
+                          id = grupo.id, 
+                          nombre = grupo.nombre, 
+                          tecnologia = grupo.tecnologia,
+                          fechaCreacion= grupo.fechaCreacion,
+                          materia= materia.nombre,
+                          comision= comision.nombre
+                      });
 
-            var alumnos = (from c in db.Alumno
-                           select c).ToList();
-            
-            Grupo miGrupo = db.Grupo.Find(id);
-            if (miGrupo == null)
+            if (grupos == null)
             {
                 return NotFound();
             }
 
-            if (alumnos != null)
-            {
-              foreach (Alumno mialumno in alumnos)
-              {
-                miGrupo.Alumno.Add(mialumno);
-                db.Grupo.Add(miGrupo);
-                db.SaveChanges();
-              }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(grupos);
         }
 
         // PUT api/Grupo/5
@@ -107,24 +111,45 @@ namespace Experentia.Controllers
 
         // POST api/Grupo
         [ResponseType(typeof(Grupo))]
-        public IHttpActionResult PostGrupo(Grupo grupo)
+        public IHttpActionResult PostGrupo(JObject data)
         {
+            Grupo dataGrupo =  data["grupo"].ToObject<Grupo>();
+            List<Alumno> alumnos = data["alumnos"].ToObject<List<Alumno>>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Grupo.Add(grupo);
+            db.Grupo.Add(dataGrupo);
             db.SaveChanges();
+            int idGrupo = dataGrupo.id;
+            Grupo grupo = db.Grupo.Find(idGrupo);
 
-            return CreatedAtRoute("DefaultApi", new { id = grupo.id }, grupo);
+            if (alumnos != null)
+            {
+                foreach (Alumno item in alumnos)
+                {
+                    Alumno alumno = db.Alumno.Find(item.id);
+                    if (alumno == null)
+                    {
+                        return NotFound();
+                    }
+
+                    grupo.Alumno.Add(alumno);
+                    db.SaveChanges();
+                }
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = dataGrupo.id }, dataGrupo);
         }
 
         // DELETE api/Grupo/5
         [ResponseType(typeof(Grupo))]
         public IHttpActionResult DeleteGrupo(int id)
         {
-            Grupo grupo = db.Grupo.Find(id);
+            Grupo grupo = db.Grupo.Include(r => r.Alumno)
+                            .Single(r => r.id == id);
             if (grupo == null)
             {
                 return NotFound();
