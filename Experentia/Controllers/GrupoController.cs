@@ -75,6 +75,32 @@ namespace Experentia.Controllers
             return Ok(grupos);
         }
 
+        //GET api/Grupo/5
+        [ResponseType(typeof(Grupo))]
+        public IHttpActionResult GetGruposbyMateria(int id)
+        {
+            var grupos = (from grupo in db.Grupo
+                          join materia in db.Materia on grupo.idComision equals materia.idComision
+                          join comision in db.Comision on grupo.idComision equals comision.id
+                          where comision.id == id
+                          select new
+                          {
+                              id = grupo.id,
+                              nombre = grupo.nombre,
+                              tecnologia = grupo.tecnologia,
+                              fechaCreacion = grupo.fechaCreacion,
+                              materia = materia.nombre,
+                              comision = comision.nombre
+                          });
+
+            if (grupos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(grupos);
+        }
+
         // PUT api/Grupo/5
         public IHttpActionResult PutGrupo(int id, Grupo grupo)
         {

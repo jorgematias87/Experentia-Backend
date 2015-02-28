@@ -88,6 +88,29 @@ namespace Experentia.Controllers
             return Ok(alumnos);
         }
 
+        // GET api/Alumno/5
+        [ResponseType(typeof(Alumno))]
+        public IHttpActionResult GetAlumnosByGrupoMateria(int id)
+        {
+            var alumnos = (from alumno in db.Alumno
+                           join grupo in db.Grupo on alumno.Grupo.FirstOrDefault().id equals grupo.id
+                           where grupo.idComision == id
+                           select new
+                           {
+                               id = alumno.id,
+                               nombre = alumno.nombre,
+                               apellido = alumno.apellido,
+                               email = alumno.email
+                           });
+
+            if (alumnos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(alumnos);
+        }
+
         // PUT api/Alumno/5
         public IHttpActionResult PutAlumno(int id, Alumno alumno)
         {
