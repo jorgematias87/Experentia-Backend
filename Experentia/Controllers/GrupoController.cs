@@ -102,12 +102,10 @@ namespace Experentia.Controllers
         }
 
         // PUT api/Grupo/5
-        public IHttpActionResult PutGrupo(int id, Grupo grupo)
+        public IHttpActionResult PutGrupo(int id, JObject data)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Grupo grupo = data["grupo"].ToObject<Grupo>();
+            List<Alumno> alumnos = data["alumnos"].ToObject<List<Alumno>>();
 
             if (id != grupo.id)
             {
@@ -119,6 +117,33 @@ namespace Experentia.Controllers
             try
             {
                 db.SaveChanges();
+
+                Grupo dataGrupo = db.Grupo.Include(r => r.Alumno)
+                                  .Single(r => r.id == id);
+                List<Alumno> alumnosGrupo = new List<Alumno>();
+
+                alumnosGrupo = (from alumno in db.Alumno
+                           where alumno.Grupo.FirstOrDefault().id == id
+                           select alumno).ToList();
+
+                if (alumnosGrupo != null)
+                {
+                    foreach(Alumno alumnoGrupo in alumnosGrupo){
+                        dataGrupo.Alumno.Remove(alumnoGrupo);
+                    }
+                    db.SaveChanges();
+                }
+
+                if (alumnos != null)
+                {
+                    foreach (Alumno item in alumnos)
+                    {
+                        Alumno alumno = db.Alumno.Find(item.id);
+
+                        dataGrupo.Alumno.Add(alumno);
+                    }
+                    db.SaveChanges();
+                };
             }
             catch (DbUpdateConcurrencyException)
             {

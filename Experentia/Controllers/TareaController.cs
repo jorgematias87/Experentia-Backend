@@ -113,6 +113,23 @@ namespace Experentia.Controllers
             return Ok(tareas);
         }
 
+        //GET api/Tarea/5
+        [ResponseType(typeof(Grupo))]
+        public IHttpActionResult GetTareasAlumno(int id)
+        {
+            var tareas = (from tarea in db.Tarea
+                          join alumno in db.Alumno on tarea.idAlumno equals alumno.id
+                          where alumno.id == id
+                          select tarea);
+
+            if (tareas == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(tareas);
+        }
+
        
         // PUT api/Tarea/5
         public IHttpActionResult PutTarea(int id, Tarea tarea)//esta harcodeada abajo 
