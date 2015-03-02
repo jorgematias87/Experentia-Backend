@@ -118,6 +118,7 @@
     <Property Name="idProyecto" Type="int" Nullable="false" />
     <Property Name="idAlumno" Type="int" />
     <Property Name="fechaCreacion" Type="datetime" />
+    <Property Name="fechaFin" Type="datetime" />
   </EntityType>
   <Association Name="FK_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="1" />

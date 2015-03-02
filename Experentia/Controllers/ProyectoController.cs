@@ -67,6 +67,51 @@ namespace Experentia.Controllers
             return responseOk;
         }
 
+        // GET api/Proyecto/5
+        [ResponseType(typeof(Proyecto))]
+        public HttpResponseMessage GetProyectosByEmpresa(int id)
+        {
+            HttpResponseMessage responseOk;
+
+            var proyectos = (from c in db.Proyecto
+                          where c.idEmpresa == id
+                          select c).ToList();
+
+            if (proyectos == null)
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.Unauthorized, "Error");
+
+                return responseError;
+            }
+
+            responseOk = Request.CreateResponse(HttpStatusCode.OK, proyectos);
+
+            return responseOk;
+        }
+
+        // GET api/Proyecto/5
+        [ResponseType(typeof(Proyecto))]
+        public HttpResponseMessage GetProyectosByAlumno(int id)
+        {
+            HttpResponseMessage responseOk;
+
+            var proyectos = (from c in db.Proyecto
+                             join tarea in db.Tarea on c.id equals tarea.idProyecto
+                             where tarea.idAlumno == id
+                             select c).ToList();
+
+            if (proyectos == null)
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.Unauthorized, "Error");
+
+                return responseError;
+            }
+
+            responseOk = Request.CreateResponse(HttpStatusCode.OK, proyectos);
+
+            return responseOk;
+        }
+
         // PUT api/Proyecto/5
         public IHttpActionResult PutProyecto(int id, Proyecto proyecto)
         {

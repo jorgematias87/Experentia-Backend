@@ -65,6 +65,26 @@ namespace Experentia.Controllers
             return responseOk;
         }
 
+        // GET api/Materia/5
+        public HttpResponseMessage GetMateriasByAlumno(int id)
+        {
+            HttpResponseMessage responseOk;
+
+            List<Materia> materias = new List<Materia>();
+            materias = (from materia in db.Materia
+                        where materia.Alumno.FirstOrDefault().id == id
+                        select materia).ToList();
+
+            if (materias == null)
+            {
+                HttpResponseMessage responseError = Request.CreateResponse(HttpStatusCode.NotFound, "Error");
+                return responseError;
+            }
+
+            responseOk = Request.CreateResponse(HttpStatusCode.OK, materias);
+            return responseOk;
+        }
+
         // PUT api/Materia/5
         public IHttpActionResult PutMateria(int id, Materia materia)
         {

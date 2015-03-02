@@ -112,6 +112,7 @@
     <Property Name="fechaCreacion" Type="DateTime" Precision="3" />
     <NavigationProperty Name="Alumno" Relationship="Self.FK_Tarea_Alumno" FromRole="Tarea" ToRole="Alumno" />
     <NavigationProperty Name="Proyecto" Relationship="Self.FK_Tarea_Proyecto" FromRole="Tarea" ToRole="Proyecto" />
+    <Property Name="fechaFin" Type="DateTime" Precision="3" />
   </EntityType>
   <Association Name="FK_Tarea_Alumno">
     <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />

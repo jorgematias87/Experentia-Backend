@@ -24,6 +24,7 @@ namespace Experentia.Models
         public int idProyecto { get; set; }
         public Nullable<int> idAlumno { get; set; }
         public Nullable<System.DateTime> fechaCreacion { get; set; }
+        public Nullable<System.DateTime> fechaFin { get; set; }
     
         public virtual Alumno Alumno { get; set; }
         public virtual Proyecto Proyecto { get; set; }
